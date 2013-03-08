@@ -1,14 +1,10 @@
-Torndb
+Introduce
 ======
 
-Torndb is a simple wrapper around MySQLdb that originally appeared
-in Tornado (http://www.tornadoweb.org).  It is being moved into
-a separate package for Tornado 3.0.
+This is a simple wrapper around mysql.connector, forked from torndb,
+that originally appeared in Tornado (http://www.tornadoweb.org) Framework.
 
-Installation
-------------
-
-``pip install torndb``
+I use mysql.connector instead of MySQLdb to support Python 3.x.
 
 Documentation
 -------------
