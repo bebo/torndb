@@ -98,9 +98,16 @@ class Connection(object):
 
     def reconnect(self):
         """Closes the existing database connection and re-opens it."""
+        # make sure we don't call _ensure_connected which calls reconnect...
         self.close()
         self._db = mysql.connector.connect(autocommit=True, **self._db_args)
-        self.execute(self._db_init_command)
+        cursor = self._db.cursor()
+        try:
+            self._execute(cursor, self._db_init_command, ())
+            return cursor.lastrowid
+        finally:
+            cursor.close()
+
 
     def iter(self, query, *parameters):
         """Returns an iterator for the given query and parameters."""
