@@ -15,11 +15,12 @@
 # under the License.
 
 import distutils.core
+from setuptools import setup, find_packages
 
-version = "0.1"
+version = "0.1.0mi2"
 
 distutils.core.setup(
-    name="torndb",
+    name="mi-torndb",
     version=version,
     py_modules=["torndb"],
     author="Facebook",
