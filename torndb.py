@@ -158,6 +158,27 @@ class Connection(object):
         finally:
             cursor.close()
 
+    def execute_multi_stmt(self, query, *parameters):
+        """Executes the given query, returning the rowcount from the query."""
+        cursor = self._cursor()
+        try:
+            results = cursor.execute(query, parameters, multi=True)
+            for r in results:
+                warnings = None
+                if self._db.get_warnings:
+                    warnings=cursor.fetchwarnings()
+                if r.with_rows:
+                    rows = r.fetchall()
+                    yield (r.statement, rows, len(rows), warnings)
+                else:
+                    yield (r.statement, None, r.rowcount, warnings)
+        except mysql.connector.OperationalError:
+            logging.error("Error connecting to MySQL on %s", self.host)
+            self.close()
+            raise
+        finally:
+            cursor.close()
+
     def execute_rowcount(self, query, *parameters):
         """Executes the given query, returning the rowcount from the query."""
         cursor = self._cursor()
