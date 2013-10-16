@@ -17,7 +17,7 @@
 import distutils.core
 from setuptools import setup, find_packages
 
-version = "0.1.0mi2"
+version = "0.1.0mi3"
 
 distutils.core.setup(
     name="mi-torndb",
