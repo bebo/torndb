@@ -56,7 +56,7 @@ class Connection(object):
         self.database = database
         self.max_idle_time = max_idle_time
 
-        args = dict(use_unicode=True, charset="utf8",
+        args = dict(use_unicode=True, charset="utf8mb4",
                     db=database,
                     sql_mode="TRADITIONAL")
         if user is not None:
