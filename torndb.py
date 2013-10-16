@@ -58,7 +58,9 @@ class Connection(object):
 
         args = dict(use_unicode=True, charset="utf8mb4",
                     db=database,
-                    sql_mode="TRADITIONAL")
+                    sql_mode="TRADITIONAL",
+                    get_warnings=True
+                    )
         if user is not None:
             args["user"] = user
         if password is not None:
@@ -213,7 +215,13 @@ class Connection(object):
 
     def _execute(self, cursor, query, parameters):
         try:
-            return cursor.execute(query, parameters)
+            result = cursor.execute(query, parameters)
+            if self._db.get_warnings:
+                warnings=cursor.fetchwarnings()
+                if warnings:
+                    logging.error("MySQL %s: %s", cursor.statement, warnings)
+            return result
+
         except mysql.connector.OperationalError:
             logging.error("Error connecting to MySQL on %s", self.host)
             self.close()
